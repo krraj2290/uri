@@ -12,17 +12,21 @@
 */
 
 $router->get('/', function () use ($router) {
-        try{
-            $rConf = array('server' => env('REDIS_HOST'), 'port' => env('REDIS_PORT'));
-            $objRedis = app('redis');
-            $objRedis->connect($rConf['server'], $rConf['port']);
-            echo " Redis Server is running: " . $objRedis->ping();
-            echo "<hr />";
-            
-        } catch (Exception $ex) {
-            echo "Error:redis::" . $ex->getMessage();
-        }
-        die;
-        
     return $router->app->version();
+});
+
+
+
+$router->group(['prefix' => 'v1/api'], function () use ($router) {
+    
+    // insert all the events
+    $router->post('tracks', ['uses' => 'TracksController@create']);
+    // update event
+    $router->put('tracks/{id}', ['uses' => 'TracksController@update']);
+    // get event
+    $router->get('tracks/{id}', ['uses' => 'TracksController@getEvent']);
+    // delete event
+    $router->delete('tracks/{id}', ['uses' => 'TracksController@delete']);
+    // get all events
+    $router->get('tracks', ['uses' => 'TracksController@getAllEvents']);
 });

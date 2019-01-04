@@ -23,7 +23,7 @@ class TracksController extends Controller {
             $key = "snaplion";
             $value = "Pramod Thakur";
 //            echo "SET::$key:" . app('redis')->set($key, $value);
-            echo "GET:KEY::$key, Value ::" . $objRedis->get($key);
+            echo "Tracks:GET:KEY::$key, Value ::" . $objRedis->get($key);
             
             echo "<hr />";
             
