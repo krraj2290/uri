@@ -16,29 +16,7 @@ class TracksController extends Controller {
      */
     public function __construct() {
         
-//        try{
-            $rConf = array('server' => env('REDIS_HOST'), 'port' => env('REDIS_PORT'));
-//            $objRedis = new \Redis();
-//            $objRedis->connect($this->_conf['server'], $this->_conf['port']);
-//            $objRedis = app('redis');
-//            $objRedis->connect($rConf['server'], $rConf['port']);
-////            echo " Redis Server is running: " . $objRedis->ping();
-//            
-////            echo "<hr />";
-////            
-////            $key = "snaplion";
-////            $value = "Pramod Thakur";
-//////            echo "SET::$key:" . app('redis')->set($key, $value);
-////            echo "GET:KEY::$key, Value ::" . $objRedis->get($key);
-////            
-////            echo "<hr />";
-//            
-//        } catch (Exception $ex) {
-////            echo "Error:redis::" . $ex->getMessage();
-//        }
-//        die;
-        
-//        env('APP_DEBUG', true);
+        env('APP_DEBUG', true);
         
 //        $request = app('request');
 //        print_r($request->headers);
@@ -111,6 +89,32 @@ class TracksController extends Controller {
             'data' => $events
         );
         return $result;
+    }
+    
+    public function checkredis(){
+        
+        try{
+            $rConf = array('server' => env('REDIS_HOST'), 'port' => env('REDIS_PORT'));
+//            $objRedis = new \Redis();
+//            $objRedis->connect($rConf['server'], $rConf['port']);
+            
+            $objRedis = app('redis');
+            $objRedis->connect($rConf['server'], $rConf['port']);
+            echo " Redis Server is running: " . $objRedis->ping();
+            
+            echo "<hr />";
+            
+            $key = "snaplion";
+            $value = "Pramod Thakur";
+//            echo "SET::$key:" . app('redis')->set($key, $value);
+            echo "GET:KEY::$key, Value ::" . $objRedis->get($key);
+            
+            echo "<hr />";
+            
+        } catch (Exception $ex) {
+            echo "Error:redis::" . $ex->getMessage();
+        }
+        die;
     }
 
 }

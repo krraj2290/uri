@@ -15,7 +15,6 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-
 $router->group(['prefix' => 'v1/api'], function () use ($router) {
     
     // insert all the events
@@ -28,4 +27,6 @@ $router->group(['prefix' => 'v1/api'], function () use ($router) {
     $router->delete('tracks/{id}', ['uses' => 'TracksController@delete']);
     // get all events
     $router->get('tracks', ['uses' => 'TracksController@getAllEvents']);
+    // redis lib check
+    $router->get('redis', ['uses' => 'TracksController@checkredis']);
 });
