@@ -29,4 +29,7 @@ $router->group(['prefix' => 'v1/api'], function () use ($router) {
     $router->get('tracks', ['uses' => 'TracksController@getAllEvents']);
     // redis lib check
     $router->get('redis', ['uses' => 'TracksController@checkredis']);
+    
+    // queue lib check
+    $router->get('queue', ['uses' => 'TracksController@queue']);
 });
