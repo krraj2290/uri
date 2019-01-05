@@ -106,7 +106,7 @@ class TracksController extends Controller {
             
             $key = "snaplion-events";
             $value = "Snaplion Segmentations";
-            echo "SET::$key:" . $objRedis->set($key, $value);
+//            echo "SET::$key:" . $objRedis->set($key, $value);
             echo "GET:KEY::$key, Value ::" . $objRedis->get($key);
             
             echo "<hr />";
