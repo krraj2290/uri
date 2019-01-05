@@ -104,9 +104,9 @@ class TracksController extends Controller {
             
             echo "<hr />";
             
-            $key = "snaplion";
-            $value = "Pramod Thakur";
-//            echo "SET::$key:" . app('redis')->set($key, $value);
+            $key = "snaplion-events";
+            $value = "Snaplion Segmentations";
+            echo "SET::$key:" . $objRedis->set($key, $value);
             echo "GET:KEY::$key, Value ::" . $objRedis->get($key);
             
             echo "<hr />";
