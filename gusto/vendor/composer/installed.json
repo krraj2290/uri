@@ -1070,6 +1070,53 @@
         "homepage": "https://laravel.com"
     },
     {
+        "name": "illuminate/redis",
+        "version": "v5.5.44",
+        "version_normalized": "5.5.44.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/illuminate/redis.git",
+            "reference": "2d57f7ec6177a5df2ac181fb08532bb3102d0d8a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/illuminate/redis/zipball/2d57f7ec6177a5df2ac181fb08532bb3102d0d8a",
+            "reference": "2d57f7ec6177a5df2ac181fb08532bb3102d0d8a",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/contracts": "5.5.*",
+            "illuminate/support": "5.5.*",
+            "php": ">=7.0",
+            "predis/predis": "~1.0"
+        },
+        "time": "2018-05-22T11:51:18+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.5-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Illuminate\\Redis\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Taylor Otwell",
+                "email": "taylor@laravel.com"
+            }
+        ],
+        "description": "The Illuminate Redis package.",
+        "homepage": "https://laravel.com"
+    },
+    {
         "name": "illuminate/session",
         "version": "v5.5.44",
         "version_normalized": "5.5.44.0",

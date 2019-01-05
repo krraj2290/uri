@@ -17,9 +17,11 @@ class TracksController extends Controller {
     public function __construct() {
         
 //        try{
-////            $rConf = array('server' => env('REDIS_HOST'), 'port' => env('REDIS_PORT'));
-////            $objRedis = app('redis');
-////            $objRedis->connect($rConf['server'], $rConf['port']);
+            $rConf = array('server' => env('REDIS_HOST'), 'port' => env('REDIS_PORT'));
+//            $objRedis = new \Redis();
+//            $objRedis->connect($this->_conf['server'], $this->_conf['port']);
+//            $objRedis = app('redis');
+//            $objRedis->connect($rConf['server'], $rConf['port']);
 ////            echo " Redis Server is running: " . $objRedis->ping();
 //            
 ////            echo "<hr />";
