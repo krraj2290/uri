@@ -53,6 +53,7 @@ class QueuesController extends Controller {
         if (empty($queue_name)) {
             return false;
         }
+        $this->_queue_name = $queue_name;
         try {
             $queueData = is_array($queueArr) ? json_encode($queueArr) : $queueArr;
             // send data to queue
@@ -69,6 +70,7 @@ class QueuesController extends Controller {
         if (empty(trim($queue_name))) { // validate queue name
             throw new Exception("Empty queue name supplied");
         }
+        $this->_queue_name = $queue_name;
         $queueData = $this->_obj->brpoplpush($queue_name, $this->_processingQueue(), 2);
         return ($queueData !== null) ? $queueData : false;
     }
@@ -77,6 +79,7 @@ class QueuesController extends Controller {
         if (empty($queue_name)) {
             return false;
         }
+        $this->_queue_name = $queue_name;
         try {
             $queueVals = $this->_obj->lrange($queue_name, 0, -1);
             return $queueVals;
