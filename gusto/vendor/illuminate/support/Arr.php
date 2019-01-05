@@ -385,6 +385,7 @@ class Arr
     {
         $results = [];
 
+        print_r(static::explodePluckParameters($value, $key));die;
 //        [$value, $key] = static::explodePluckParameters($value, $key);
 
         foreach ($array as $item) {
