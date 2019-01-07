@@ -152,16 +152,14 @@ class QueuesController extends Controller {
     
     
     
-    public function subscribe($channels) {
+    public function subscribe($channels,$subscriber="default") {
         try {
             if (empty($channels)) {
                 return false;
             }
             return $this->_obj->subscribe($channels, function($message,$channel){
-                echo "\n channel::" . $channel;
+                echo "\n channel:$subscriber:" . $channel;
                 echo "\n message::" . $message;
-                
-//                print_r($message);
             });
         } catch (Exception $ex) {
             $this->_msgs[] = $ex->getMessage();

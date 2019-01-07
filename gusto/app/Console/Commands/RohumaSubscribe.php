@@ -18,9 +18,9 @@ class RohumaSubscribe extends Command{
     public function handle(){
         $channels = array("snaplion-event-track-channel","snaplion-event-track-channel-2");
         try {
-            echo "\n\n TracksController:subscribe_to_channel:snaplion-event-track-channel-3:before: \n\n";
+            $subscriber = "rohuma";
             $objQueues = new TracksController();
-            $message = $objQueues->subscribe_to_channel($channels);
+            $message = $objQueues->subscribe_to_channel($channels,$subscriber);
             
             echo "\n\n TracksController:subscribe_to_channel:resp: \n\n";
             print_r($message);

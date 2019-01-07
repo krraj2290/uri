@@ -128,12 +128,12 @@ class TracksController extends Controller {
         return $objQueues->publish($channel, $message);
     }
     
-    public function subscribe_to_channel($channels) {
+    public function subscribe_to_channel($channels,$subscriber="default") {
         if(empty($channels)){
             return false;
         }
         $objQueues = new QueuesController();
-        return $objQueues->subscribe($channels);
+        return $objQueues->subscribe($channels,$subscriber);
     }
 
 }
