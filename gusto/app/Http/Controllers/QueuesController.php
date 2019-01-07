@@ -139,13 +139,52 @@ class QueuesController extends Controller {
         if (empty($channel) || empty($message)) {
             return false;
         }
-        $channel = empty($channel) ? "snaplion-default-channel" : $channel;
+        try {
+            $channel = empty($channel) ? "snaplion-default-channel" : $channel;
 
-        $message = is_array($message) ? json_encode($message) : $message;
+            $message = is_array($message) ? json_encode($message) : $message;
 
-        return $this->_obj->publish($channel, $message);
+            return $this->_obj->publish($channel, $message);
+        } catch (Exception $ex) {
+            $this->_msgs[] = $ex->getMessage();
+        }
+    }
+    
+    
+    
+    public function subscribe($channels) {
+        try {
+            if (empty($channels)) {
+                return false;
+            }
+            return $this->_obj->subscribe($channels, function($message,$channel){
+                echo "\n channel::" . $channel;
+                echo "\n message::" . $message;
+                
+//                print_r($message);
+            });
+        } catch (Exception $ex) {
+            $this->_msgs[] = $ex->getMessage();
+        }
+    }
+    
+    public function subscribe_callback($msg) {
+        try {
+            $channel = "no channnel";
+            switch ($channel) {
+                case 'snaplion-event-track-channel':
+                    print "get $msg FROM $channel\n";
+                    break;
+                case 'snaplion-default-channel':
+                case 'snaplion-default-event-track-channel':
+                    break;
+            }
+        } catch (Exception $ex) {
+            $this->_msgs[] = $ex->getMessage();
+        }
     }
 
+    
     public function getMessage() {
         return $this->_msg;
     }
