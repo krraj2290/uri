@@ -26,6 +26,10 @@ class ComposerStaticInit93a866d5140c0c81b5e5d04b5f0c44a2
         array (
             'Webmozart\\Assert\\' => 17,
         ),
+        'T' => 
+        array (
+            'Tests\\' => 6,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php70\\' => 23,
@@ -40,6 +44,8 @@ class ComposerStaticInit93a866d5140c0c81b5e5d04b5f0c44a2
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\Console\\' => 26,
+            'Superbalist\\PubSub\\Redis\\' => 25,
+            'Superbalist\\PubSub\\' => 19,
         ),
         'P' => 
         array (
@@ -115,6 +121,11 @@ class ComposerStaticInit93a866d5140c0c81b5e5d04b5f0c44a2
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
+        'Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/superbalist/php-pubsub/tests',
+            1 => __DIR__ . '/..' . '/superbalist/php-pubsub-redis/tests',
+        ),
         'Symfony\\Polyfill\\Php70\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php70',
@@ -162,6 +173,14 @@ class ComposerStaticInit93a866d5140c0c81b5e5d04b5f0c44a2
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Superbalist\\PubSub\\Redis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/superbalist/php-pubsub-redis/src',
+        ),
+        'Superbalist\\PubSub\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/superbalist/php-pubsub/src',
         ),
         'Psr\\SimpleCache\\' => 
         array (
