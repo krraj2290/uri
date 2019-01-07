@@ -22,7 +22,7 @@ class QueuesController extends Controller {
             $this->_msgs[] = $ex->getMessage();
         }
     }
-    
+
     public function ping() {
         echo " Redis Server is running: " . $this->_obj->ping();
     }
@@ -126,13 +126,24 @@ class QueuesController extends Controller {
         $this->_obj->del($this->_failedQueue());
         $this->_obj->del($this->_processingQueue());
     }
-    
+
     public function _delete($queue_name) {
         if (empty(trim($queue_name))) { // validate queue name
             throw new Exception("Empty queue name supplied");
         }
         $this->_queue_name = $queue_name;
         $this->_obj->del($this->_queue_name);
+    }
+
+    public function publish($channel, $message) {
+        if (empty($channel) || empty($message)) {
+            return false;
+        }
+        $channel = empty($channel) ? "snaplion-default-channel" : $channel;
+
+        $message = is_array($message) ? json_encode($message) : $message;
+
+        return $this->_obj->publish($channel, $message);
     }
 
     public function getMessage() {

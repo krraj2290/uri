@@ -12,6 +12,7 @@ class TracksController extends Controller {
      * @return void
      */
     public function __construct() {
+        
     }
 
     /**
@@ -29,8 +30,29 @@ class TracksController extends Controller {
      * @return string
      */
     public function create() {
-
-        $result = array('status' => 200, 'message' => "Your request noted successfully and send for further insertions.");
+        $channel = "snaplion-event-track-channel";
+        
+        
+        $request = app('request');
+//        print_r($request->headers);
+//        print_r($request->headers->get('authorization'));
+//        print_r($request->headers->get('s-id'));
+//        print_r($request->getMethod());
+        
+//        print_r($request->all());
+//        print_r($request->toArray());echo "<br />";
+//        print_r($request->get('app_id'));echo ", ";
+//        print_r($request->input('fan_id'));
+        
+        $postVars = $request->all();
+        
+        $microtime = microtime(true);
+        $microtime = str_replace(".", ":", $microtime);
+        $postVars['guid'] = $postVars['app_id'] . "-" . $postVars['fan_id'] . "-". $postVars['event'] . "-" . $microtime;
+        
+        // send data to channel
+        $this->publish_to_channel($postVars, $channel);
+        $result = array('status' => 200, 'message' => "Your request noted successfully and send for further insertions.", 'data' => $postVars);
         return $result;
     }
 
@@ -83,6 +105,12 @@ class TracksController extends Controller {
         $objQueues = new QueuesController();
         return $objQueues->queue_data_count($queue_name);
         //return $objQueues->consume($queue_name);
+    }
+
+    public function publish_to_channel($message, $channel) {
+        $channel = empty($channel) ? "snaplion-default-event-track-channel" : $channel;
+        $objQueues = new QueuesController();
+        return $objQueues->publish($channel, $message);
     }
 
 }
