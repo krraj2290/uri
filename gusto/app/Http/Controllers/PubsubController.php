@@ -27,9 +27,9 @@ class PubsubController extends Controller {
 
     public function publish() {
         try {
-            $this->_adapter->publish('my_channel-1-test', 'HELLO WORLD');
-            $this->_adapter->publish('my_channel-1-test', ['hello' => 'world']);
-            $this->_adapter->publish('my_channel-1-test', 1);
+            $this->_adapter->publish('my_channel_1_test', 'HELLO WORLD');
+//            $this->_adapter->publish('my_channel_1_test', ['hello' => 'world']);
+//            $this->_adapter->publish('my_channel_1_test', 1);
         } catch (Exception $ex) {
             
         }
@@ -41,16 +41,19 @@ class PubsubController extends Controller {
                 'message 1',
                 'message 2',
             ];
-            $this->_adapter->publishBatch('my_channel-1-test', $messages);
+            $this->_adapter->publishBatch('my_channel_1_test', $messages);
         } catch (Exception $ex) {
             
         }
     }
 
-    public function subscribe() {
+    public function subscribe() { 
         try {
-            $this->_adapter->subscribe('my_channel-1-test', function ($message) {
-                var_dump($message);
+            $channels = array('my_channel_1_test','default_test');
+            $this->_adapter->subscribe($channels, function ($message,$channel) {
+                print_r(func_get_args());
+//                var_dump($message);
+//                var_dump($channel);
             });
         } catch (Exception $ex) {
             
