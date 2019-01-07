@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         "App\Console\Commands\RohumaSubscribe",
         'App\Console\Commands\CallRoute',
         'App\Console\Commands\RohumaCallRoute',
+        'App\Console\Commands\QueueDefaultSnaplionEventTrack',
     ];
 
     /**

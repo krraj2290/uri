@@ -135,5 +135,17 @@ class TracksController extends Controller {
         $objQueues = new QueuesController();
         return $objQueues->subscribe($channels,$subscriber);
     }
+    
+    public function subscribed_queue_process($queue_name) {
+        if(empty($queue_name)){
+            return false;
+        }
+        $objQueues = new QueuesController();
+        $queue_data = $objQueues->consume($queue_name);
+        
+        echo "\n TracksController::subscribed_queue_process:$queue_name:consume:resp:\n";
+        print_r($queue_data);
+        echo "\n\n";
+    }
 
 }

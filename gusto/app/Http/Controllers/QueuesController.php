@@ -6,10 +6,13 @@ use Request;
 
 class QueuesController extends Controller {
 
-    protected $_obj;
+    public $_obj;
     protected $_queue_name;
     protected $_subscriber;
     protected $_msgs;
+    
+    public $_waitingSeconds = 5;
+    public $_killWaitingProcessCount = 10;
 
     /**
      * Create a new controller instance.
@@ -78,6 +81,60 @@ class QueuesController extends Controller {
         $queueData = $this->_obj->brpoplpush($queue_name, $this->_processingQueue(), 2);
         return ($queueData !== null) ? $queueData : false;
     }
+    
+    
+    
+    /**
+     * Remove the enteries from processing queue when successful
+     * @param type $data
+     * @return type
+     */
+    public function _success($queueName,$data) {
+        // check if queue data is empty then no need to process
+        if(empty(trim($data))){
+            return false;
+        }
+        // check if queue data is an array then convert it into string.
+        if (is_array($data)) {
+            $data = json_encode($data);
+        }
+        // check if queue name is empty or not
+        if (empty(trim($queueName))) { // validate queue name
+            throw new Exception("Empty queue name supplied");
+        }
+        $this->_queue_name = $queueName;
+//        echo "<br />removing from processing queue '".$this->_processingQueue()."', data : '$data'";
+        // remove data from processing queue
+        $this->_obj->lrem($this->_processingQueue(), $data, 1);
+        return true;
+    }
+
+    /**
+     * 
+     * @param type $data
+     * @return type
+     */
+    public function _fail($queueName,$data) {
+        // check if queue data is empty then no need to process
+        if(empty(trim($data))){
+            return false;
+        }
+        // check if queue data is an array then convert it into string.
+        if (is_array($data)) {
+            $data = json_encode($data);
+        }
+        // check if queue name is empty or not
+        if (empty(trim($queueName))) { // validate queue name
+            throw new Exception("Empty queue name supplied");
+        }
+        $this->_queue_name = $queueName;
+        // remove data from processing queue
+        $this->_obj->lrem($this->_processingQueue(), $data, 1);
+        // add data from failed queue
+        $this->_obj->lpush($this->_failedQueue(), $data);
+        return true;
+    }
+    
 
     public function get_all_queue_data($queue_name) {
         if (empty($queue_name)) {
