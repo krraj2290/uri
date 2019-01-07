@@ -30,7 +30,7 @@ class TracksController extends Controller {
      * @return string
      */
     public function create() {
-        $channel = "snaplion-event-track-channel";
+        
         
         $request = app('request');
 //        print_r($request->headers);
@@ -45,18 +45,23 @@ class TracksController extends Controller {
         
         $postVars = $request->all();
         
+        $channel = "snaplion-event-track-channel";
+        
         $microtime = microtime(true);
         $microtime = str_replace(".", ":", $microtime);
         $postVars['guid'] = $postVars['app_id'] . "-" . $postVars['fan_id'] . "-". $postVars['event'] . "-" . $microtime;
+        $postVars['channel'] = $channel;
         
         // send data to channel
         $publish_resp = $this->publish_to_channel($postVars, $channel);
         
-//        $channel1 = "snaplion-event-track-channel-1";
-//        $publish_resp1 = $this->publish_to_channel($postVars, $channel1);
+        $channel1 = "snaplion-event-track-channel-1";
+        $postVars['channel'] = $channel1;
+        $publish_resp1 = $this->publish_to_channel($postVars, $channel1);
 //        
-//        $channel2 = "snaplion-event-track-channel-2";
-//        $publish_resp2 = $this->publish_to_channel($postVars, $channel2);
+        $channel2 = "snaplion-event-track-channel-2";
+        $postVars['channel'] = $channel2;
+        $publish_resp2 = $this->publish_to_channel($postVars, $channel2);
         
         $status = 500;
         if($publish_resp){
@@ -123,12 +128,12 @@ class TracksController extends Controller {
         return $objQueues->publish($channel, $message);
     }
     
-    public function subscribe_to_channel($channels) {
+    public function subscribe_to_channel($channels,$subscriber="default") {
         if(empty($channels)){
             return false;
         }
         $objQueues = new QueuesController();
-        return $objQueues->subscribe($channels);
+        return $objQueues->subscribe($channels,$subscriber);
     }
 
 }

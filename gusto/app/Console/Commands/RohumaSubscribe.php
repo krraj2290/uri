@@ -7,18 +7,18 @@ use App\Http\Controllers\TracksController;
 
 ini_set('default_socket_timeout', -1);
 
-class ChannelSubscribe extends Command{
-    protected $signature = 'channel:subscribe';
-    protected $description = 'Subscribe to channel "snaplion-event-track-channel, snaplion-event-track-channel-1" to get message which is publish to channel';
+class RohumaSubscribe extends Command{
+    protected $signature = 'channel:subscriberohuma';
+    protected $description = 'Subscribe to channel "snaplion-event-track-channel, snaplion-event-track-channel-2" to get message which is publish to channel';
     
     public function __construct() {
         parent::__construct();
     }
     
     public function handle(){
-        $channels = array("snaplion-event-track-channel", "snaplion-event-track-channel-1");
+        $channels = array("snaplion-event-track-channel","snaplion-event-track-channel-2");
         try {
-            $subscriber = "default";
+            $subscriber = "rohuma";
             $objQueues = new TracksController();
             $message = $objQueues->subscribe_to_channel($channels,$subscriber);
             
