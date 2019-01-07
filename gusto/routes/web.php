@@ -33,3 +33,13 @@ $router->group(['prefix' => 'v1/api'], function () use ($router) {
     // queue lib check
     $router->get('queue', ['uses' => 'TracksController@queue']);
 });
+
+$router->group(['prefix' => 'v2/api'], function () use ($router) {
+    
+     // publish all the events
+    $router->get('pub', ['uses' => 'PubsubController@publish']);
+     // publish batch the events
+    $router->get('batch-pub', ['uses' => 'PubsubController@batch_publish']);
+    // subscribe the message
+    $router->get('sub', ['uses' => 'PubsubController@subscribe']);
+});
