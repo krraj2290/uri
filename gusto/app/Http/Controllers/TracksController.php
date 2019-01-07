@@ -32,8 +32,6 @@ class TracksController extends Controller {
     public function create() {
         $channel = "snaplion-event-track-channel";
         
-        
-        
         $request = app('request');
 //        print_r($request->headers);
 //        print_r($request->headers->get('authorization'));
@@ -59,8 +57,6 @@ class TracksController extends Controller {
 //        
 //        $channel2 = "snaplion-event-track-channel-2";
 //        $publish_resp2 = $this->publish_to_channel($postVars, $channel2);
-        
-        
         
         $status = 500;
         if($publish_resp){
