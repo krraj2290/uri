@@ -157,7 +157,7 @@ class QueuesController extends Controller {
                 return false;
             }
             $this->_subscriber = $subscriber;
-            return $this->_obj->subscribe($channels, function($message,$channel,$subscriberName){
+            return $this->_obj->subscribe($channels, function($message,$channel){
                 echo "\n channel:".$this->_subscriber.":" . $channel;
                 echo "\n message::" . $message;
             });
