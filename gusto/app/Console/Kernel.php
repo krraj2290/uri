@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         "App\Console\Commands\ChannelSubscribe",
         'App\Console\Commands\CallRoute',
+        'App\Console\Commands\RohumaCallRoute',
     ];
 
     /**
