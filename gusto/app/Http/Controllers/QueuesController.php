@@ -57,6 +57,9 @@ class QueuesController extends Controller {
         $this->_queue_name = $queue_name;
         try {
             $queueData = is_array($queueArr) ? json_encode($queueArr) : $queueArr;
+            
+            echo "send_to_queue:$queue_name:data:\n";
+            echo "\n\n $queueData \n\n";
             // send data to queue
             return $this->_obj->lPush($queue_name, $queueData);
         } catch (Exception $ex) {
@@ -157,32 +160,35 @@ class QueuesController extends Controller {
                 return false;
             }
             $this->_subscriber = $subscriber;
-            return $this->_obj->subscribe($channels, function($message,$channel){
-                echo "\n channel:".$this->_subscriber.":" . $channel;
-                echo "\n message::" . $message;
-            });
-        } catch (Exception $ex) {
-            $this->_msgs[] = $ex->getMessage();
-        }
-    }
-    
-    public function subscribe_callback($msg) {
-        try {
-            $channel = "no channnel";
-            switch ($channel) {
-                case 'snaplion-event-track-channel':
-                    print "get $msg FROM $channel\n";
-                    break;
-                case 'snaplion-default-channel':
-                case 'snaplion-default-event-track-channel':
-                    break;
+            try{
+                $returnResult = $this->_obj->subscribe($channels, function($message,$channel){
+                    $this->subscribe_callback($channel, $this->_subscriber, $message);
+                });
+            } catch (Exception $ex) {
+                echo "Error::" . $ex->getMessage();
             }
         } catch (Exception $ex) {
             $this->_msgs[] = $ex->getMessage();
         }
     }
-
     
+    public function subscribe_callback($channel, $subscriber, $message) {
+        try {
+            // send data to queue for further processing
+            $queue_name = "$subscriber-$channel-queue";
+            echo "\n Sending data to Queue:$queue_name, Message::\n";
+            
+            $objQueues = new PubsubController();
+            $resp = $objQueues->send_to_queue($queue_name,$message);
+            
+            echo "\n PubsubController::send_to_queue:resp:: \n";
+            print_r($resp);
+            echo "\n\n";
+        } catch (Exception $ex) {
+            $this->_msgs[] = $ex->getMessage();
+        }
+    }
+
     public function getMessage() {
         return $this->_msg;
     }

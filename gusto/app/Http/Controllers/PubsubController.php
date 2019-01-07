@@ -82,4 +82,17 @@ class PubsubController extends Controller {
         }
     }
 
+    public function send_to_queue($queue_name, $queueArr) {
+        if (empty($queue_name)) {
+            return false;
+        }
+        try {
+            $queueData = is_array($queueArr) ? json_encode($queueArr) : $queueArr;
+            // send data to queue
+            return $this->_adapter->queue($queue_name, $queueData);
+        } catch (Exception $ex) {
+            $this->_msgs[] = $ex->getMessage();
+        }
+    }
+
 }

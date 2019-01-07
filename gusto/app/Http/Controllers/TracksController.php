@@ -54,14 +54,14 @@ class TracksController extends Controller {
         
         // send data to channel
         $publish_resp = $this->publish_to_channel($postVars, $channel);
-        
+//        
         $channel1 = "snaplion-event-track-channel-1";
         $postVars['channel'] = $channel1;
         $publish_resp1 = $this->publish_to_channel($postVars, $channel1);
-//        
-        $channel2 = "snaplion-event-track-channel-2";
-        $postVars['channel'] = $channel2;
-        $publish_resp2 = $this->publish_to_channel($postVars, $channel2);
+////        
+//        $channel2 = "snaplion-event-track-channel-2";
+//        $postVars['channel'] = $channel2;
+//        $publish_resp2 = $this->publish_to_channel($postVars, $channel2);
         
         $status = 500;
         if($publish_resp){

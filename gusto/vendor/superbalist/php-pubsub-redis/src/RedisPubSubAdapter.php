@@ -98,4 +98,16 @@ class RedisPubSubAdapter implements PubSubAdapterInterface
             $this->publish($channel, $message);
         }
     }
+    
+    /**
+     * Publish a message to a channel.
+     *
+     * @param string $channel
+     * @param mixed $message
+     */
+    public function queue($queue_name, $queueData)
+    {
+        return $this->client->lpush($queue_name, $queueData);
+    }
+
 }
