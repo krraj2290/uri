@@ -9,14 +9,14 @@ ini_set('default_socket_timeout', -1);
 
 class RohumaSubscribe extends Command{
     protected $signature = 'channel:subscriberohuma';
-    protected $description = 'Subscribe to channel "snaplion-event-track-channel-2" to get message which is publish to channel';
+    protected $description = 'Subscribe to channel "snaplion-event-track-channel, snaplion-event-track-channel-2" to get message which is publish to channel';
     
     public function __construct() {
         parent::__construct();
     }
     
     public function handle(){
-        $channels = array("snaplion-event-track-channel-2");
+        $channels = array("snaplion-event-track-channel","snaplion-event-track-channel-2");
         try {
             echo "\n\n TracksController:subscribe_to_channel:snaplion-event-track-channel-3:before: \n\n";
             $objQueues = new TracksController();
