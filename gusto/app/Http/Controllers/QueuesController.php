@@ -8,6 +8,7 @@ class QueuesController extends Controller {
 
     protected $_obj;
     protected $_queue_name;
+    protected $_subscriber;
     protected $_msgs;
 
     /**
@@ -150,15 +151,14 @@ class QueuesController extends Controller {
         }
     }
     
-    
-    
     public function subscribe($channels,$subscriber="default") {
         try {
             if (empty($channels)) {
                 return false;
             }
+            $this->_subscriber = $subscriber;
             return $this->_obj->subscribe($channels, function($message,$channel,$subscriberName){
-                echo "\n channel:$subscriberName:" . $channel;
+                echo "\n channel:".$this->_subscriber.":" . $channel;
                 echo "\n message::" . $message;
             });
         } catch (Exception $ex) {
