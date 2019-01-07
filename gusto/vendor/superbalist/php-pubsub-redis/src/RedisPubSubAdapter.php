@@ -46,6 +46,28 @@ class RedisPubSubAdapter implements PubSubAdapterInterface
         foreach ($loop as $message) {
             /** @var \stdClass $message */
             if ($message->kind === 'message') {
+                call_user_func($handler, Utils::unserializeMessagePayload($message));
+            }
+        }
+
+        unset($loop);
+    }
+    
+    /**
+     * PSubscribe a handler to a channel.
+     *
+     * @param string $channel
+     * @param callable $handler
+     */
+    public function psubscribe($channel, callable $handler)
+    {
+        $loop = $this->client->pubSubLoop();
+
+        $loop->psubscribe($channel);
+
+        foreach ($loop as $message) {
+            /** @var \stdClass $message */
+            if ($message->kind === 'message') {
                 call_user_func($handler, Utils::unserializeMessagePayload($message->payload));
             }
         }
