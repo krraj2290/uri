@@ -28,8 +28,8 @@ class PubsubController extends Controller {
     public function publish() {
         try {
             $this->_adapter->publish('my_channel_1_test', 'HELLO WORLD');
-//            $this->_adapter->publish('my_channel_1_test', ['hello' => 'world']);
-//            $this->_adapter->publish('my_channel_1_test', 1);
+            $this->_adapter->publish('default_test', ['hello' => 'India']);
+            $this->_adapter->publish('default_test_1', 1);
         } catch (Exception $ex) {
             
         }
@@ -50,10 +50,32 @@ class PubsubController extends Controller {
     public function subscribe() { 
         try {
             $channels = array('my_channel_1_test','default_test');
-            $this->_adapter->subscribe($channels, function ($message,$channel) {
-                print_r(func_get_args());
+            
+            $this->_adapter->subscribe($channels, function ($message) {
+//                print_r(func_get_args());
 //                var_dump($message);
+                $queueController = new QueuesController();
+                $res = $queueController->send_to_queue($message['channel'],$message['message']);
+                
+                var_dump($res);
 //                var_dump($channel);
+            });
+        } catch (Exception $ex) {
+            
+        }
+    }
+    
+    public function subscribe_rohuma() { 
+        try {
+            $channels = array('my_channel_1_test','default_test_1');
+            
+            $this->_adapter->subscribe($channels, function ($message) {
+//                print_r(func_get_args());
+//                var_dump($message);
+                $queueController = new QueuesController();
+                $res = $queueController->send_to_queue($message['channel'],$message['message']);
+                
+                var_dump($res);
             });
         } catch (Exception $ex) {
             
