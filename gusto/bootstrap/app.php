@@ -22,20 +22,20 @@ try {
 $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
-$app->configure('filesystems');
+//$app->configure('filesystems');
  $app->withFacades();
 
  $app->withEloquent();
  
- class_alias('Illuminate\Support\Facades\Storage', 'Storage');
- 
- $app->singleton('filesystem', function ($app) {
-    return $app->loadComponent(
-        'filesystems',
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
-        'filesystem'
- );
-    });
+// class_alias('Illuminate\Support\Facades\Storage', 'Storage');
+// 
+// $app->singleton('filesystem', function ($app) {
+//    return $app->loadComponent(
+//        'filesystems',
+//        Illuminate\Filesystem\FilesystemServiceProvider::class,
+//        'filesystem'
+// );
+//    });
 
 /*
 |--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ $app->singleton(
 // $app->register(App\Providers\AuthServiceProvider::class);
  $app->register(App\Providers\EventServiceProvider::class);
  
- $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
+// $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
  
 
 /*
