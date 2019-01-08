@@ -112,7 +112,9 @@ class TracksController extends Controller {
     }
 
     public function publish_to_channel($message, $channel) {
-        $channel = empty($channel) ? "snaplion-default-event-track-channel" : $channel;
+        if(empty($channel) || empty($message)){
+            return false;
+        }
         $objQueues = new QueuesController();
         return $objQueues->publish($channel, $message);
     }

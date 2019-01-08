@@ -17,9 +17,13 @@ class SubscribeDefault extends Command{
     
     public function handle(){
 //        $channels = array("channel-default-event", "channel-snaplion-event");
+        /**
+         * @important if number of subscribed channel increase also queue name also split on the bases of channel and subscriber
+         * where we need to implement the backend/server setting for those queue
+         */
         $channels = array("channel-default-event");
         try {
-            $subscriber = "default";
+            $subscriber = "defaultsubscriber";
             $objQueues = new TracksController();
             $message = $objQueues->subscribe_to_channel($channels,$subscriber);
             
