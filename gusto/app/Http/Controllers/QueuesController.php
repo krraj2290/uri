@@ -200,8 +200,6 @@ class QueuesController extends Controller {
             return false;
         }
         try {
-            $channel = empty($channel) ? "snaplion-default-channel" : $channel;
-
             $message = is_array($message) ? json_encode($message) : $message;
 
             return $this->_obj->publish($channel, $message);

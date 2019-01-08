@@ -7,18 +7,23 @@ use App\Http\Controllers\TracksController;
 
 ini_set('default_socket_timeout', -1);
 
-class ChannelSubscribe extends Command{
-    protected $signature = 'channel:subscribe';
-    protected $description = 'Subscribe to channel "snaplion-event-track-channel, snaplion-event-track-channel-1" to get message which is publish to channel';
+class SubscribeDefault extends Command{
+    protected $signature = 'subscribe:channel-default-event';
+    protected $description = 'Subscribe to channel "channel-default-event" to get message which is publish to channel';
     
     public function __construct() {
         parent::__construct();
     }
     
     public function handle(){
-        $channels = array("snaplion-event-track-channel", "snaplion-event-track-channel-1");
+//        $channels = array("channel-default-event", "channel-snaplion-event");
+        /**
+         * @important if number of subscribed channel increase also queue name also split on the bases of channel and subscriber
+         * where we need to implement the backend/server setting for those queue
+         */
+        $channels = array("channel-default-event");
         try {
-            $subscriber = "default";
+            $subscriber = "defaultsubscriber";
             $objQueues = new TracksController();
             $message = $objQueues->subscribe_to_channel($channels,$subscriber);
             

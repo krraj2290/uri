@@ -13,11 +13,15 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        "App\Console\Commands\ChannelSubscribe",
-        "App\Console\Commands\RohumaSubscribe",
+        "App\Console\Commands\SubscribeDefault",
+        "App\Console\Commands\SubscribeRohuma",
+        
         'App\Console\Commands\CallRoute',
         'App\Console\Commands\RohumaCallRoute',
+        
         'App\Console\Commands\QueueDefaultSnaplionEventTrack',
+        'App\Console\Commands\QueueDefaultEvent',
+        'App\Console\Commands\QueueRohumaEvent',
     ];
 
     /**
