@@ -30,11 +30,8 @@ class PubsubController extends Controller {
             $request = app('request');
             $postVars = $request->all();
 //            $jsonData = json_encode($postVars,true);
-//            echo $jsonData;
+            print_r($postVars);
             $this->_adapter->publish('default-snaplion-event-track-channel-queue', $postVars);
-//            $this->_adapter->publish('default-snaplion-event-track-channel-queue', 'HELLO WORLD');
-//            $this->_adapter->publish('default-snaplion-event-track-channel-queue', ['hello' => 'India']);
-//            $this->_adapter->publish('default_test_1', 1);
         } catch (Exception $ex) {
             
         }
