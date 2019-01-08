@@ -61,10 +61,14 @@ class QueueDefaultSnaplionEventTrack extends Command {
                         }
                         //write file 
                         $file_name = "/tmp/" . $queueName . ".json";
+                        $bfileSize1 = 0;
+                        $bfileSize = 0;
                         if (file_exists($file_name)) {
                             $file_name1 = "/tmp/" . $queueName . "_1.json";
                             $bfileSize = filesize($file_name);
+                            if (file_exists($file_name)) {
                             $bfileSize1 = filesize($file_name1);
+                            }
                             if (file_exists($file_name1) && ($bfileSize1 / (1024 * 1024)) > 10) {
                                 $file_name = "/tmp/" . $queueName . ".json";
                             }
