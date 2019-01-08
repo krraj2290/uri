@@ -19,7 +19,7 @@ class QueueDefaultSnaplionEventTrack extends Command{
     }
     
     public function handle(){
-        $queue_name = "default-event-channel-queue";
+        $queue_name = "default-snaplion-event-track-channel-queue";
         try {
             // consume the queue
             $this->_consume($queue_name);
