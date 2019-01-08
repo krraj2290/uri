@@ -33,7 +33,7 @@ class TracksController extends Controller {
         $request = app('request');
         $postVars = $request->all();
         
-        $channel = "channel-default-event";
+        $channel = isset($postVars['channel']) ? $postVars['channel'] : "channel-default-event";
         
         $microtime = microtime(true);
         $microtime = str_replace(".", ":", $microtime);
