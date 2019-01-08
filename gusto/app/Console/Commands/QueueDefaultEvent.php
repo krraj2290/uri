@@ -12,7 +12,7 @@ ini_set('default_socket_timeout', -1);
 class QueueDefaultEvent extends Command {
 
     protected $signature = 'queue:channel-default-event';
-    protected $_queue_name = "defaultsubscriber-channel-rohuma-event-queue";
+    protected $_queue_name = "defaultsubscriber-channel-default-event-queue";
     protected $description = 'Process QUEUE "channel-default-event-queue" to get message and save to S3 File';
     protected $_killProcessCount = 5; // kill process after 50 attempt
 
