@@ -61,8 +61,8 @@ class QueuesController extends Controller {
         try {
             $queueData = is_array($queueArr) ? json_encode($queueArr) : $queueArr;
             
-            echo "send_to_queue:$queue_name:data:\n";
-            echo "\n\n $queueData \n\n";
+//            echo "send_to_queue:$queue_name:data:\n";
+//            echo "\n\n $queueData \n\n";
             // send data to queue
             return $this->_obj->lPush($queue_name, $queueData);
         } catch (Exception $ex) {
