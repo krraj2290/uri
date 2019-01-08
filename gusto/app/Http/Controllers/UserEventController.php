@@ -28,15 +28,16 @@ class UserEventController extends Controller {
             return false;
         }
         
-        echo "\n\n UserEventController:save:payload:: \n";
-        print_r($params);
-        
-        echo "\n\n";
-        
         $params['updated_at'] = date("Y-m-d H:i:s");
         $params['created_at'] = date("Y-m-d H:i:s");
         $objEvent = new \App\UserEvent();
         $result = $objEvent->create($params);
+        
+        if($result){
+            echo "\n\n UserEventController:save:success:: \n";
+        }else{
+            echo "\n\n UserEventController:save:failed:: \n";
+        }
         return $result;
     }
 
