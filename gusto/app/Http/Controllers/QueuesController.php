@@ -208,7 +208,7 @@ class QueuesController extends Controller {
                  * @important send the data to fallback if there is no running subscriber found for published channel
                  */
                 $fallback_result = $this->send_to_queue("default-event-fallback-queue", $message);
-//                return $fallback_result;
+                return $fallback_result;
             }
             return $publish_result;
         } catch (Exception $ex) {
