@@ -51,28 +51,22 @@ class QueueEventFallback extends Command {
                         print_r($queueData);
                         echo "\n\n";
 
-                        $queueDataArr = json_decode($queueData, true);
+                        $queryStrArr = json_decode($queueData, true);
                         if(!is_array($queryStrArr)){
-                            $queueDataArr = json_decode($queryStrArr, true);
+                            $queryStrArr = json_decode($queryStrArr, true);
                         }
-                        
-//                        $queueDataArr = array();
-//                        // rearrange the key names
-//                        foreach ($queryStrArr as $k => $v) {
-//                            $nk = str_replace(array('"', "'"), '', $k);
-//                            $queueDataArr[$nk] = $v;
-//                        }
-                        
+                        $queueDataArr = array();
+                        // rearrange the key names
+                        foreach ($queryStrArr as $k => $v) {
+                            $nk = str_replace(array('"', "'"), '', $k);
+                            $queueDataArr[$nk] = $v;
+                        }
                         try {
                             $addArr = array(
-                                'mobapp_id' => $queueDataArr['app_id'],
-                                'fan_id' => $queueDataArr['fan_id'],
-                                'section' => $queueDataArr['channel'],
-                                'event' => $queueDataArr['event'],
-                                'sub_event' => $queueDataArr['sub_event'],
-                                'extra' => $queueDataArr['extra'],
-                                'timestamp' => $queueDataArr['timestamp'],
-                                'transaction_id' => $queueDataArr['guid'],
+                                'mobapp_id' => $queueDataArr['app_id'], 'fan_id' => $queueDataArr['fan_id'],
+                                'section' => $queueDataArr['channel'], 'event' => $queueDataArr['event'],
+                                'sub_event' => $queueDataArr['sub_event'], 'extra' => $queueDataArr['extra'],
+                                'timestamp' => $queueDataArr['timestamp'], 'transaction_id' => $queueDataArr['guid'],
                             );
                             // save the entry 
 //                            $objEvents = new EventController();
