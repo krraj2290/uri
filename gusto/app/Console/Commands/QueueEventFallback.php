@@ -70,8 +70,8 @@ class QueueEventFallback extends Command {
                                 'transaction_id' => $queueDataArr['guid'],
                             );
                             // save the entry
-                            $objEvents = new EventController();
-                            $objEvents->save($addArr);
+//                            $objEvents = new EventController();
+//                            $objEvents->save($addArr);
                         } catch (Exception $ex) {
                             
                         }
