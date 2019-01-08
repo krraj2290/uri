@@ -45,7 +45,7 @@ class TracksController extends Controller {
         
         $postVars = $request->all();
         
-        $channel = "snaplion-event-track-channel";
+        $channel = "channel-default-event";
         
         $microtime = microtime(true);
         $microtime = str_replace(".", ":", $microtime);
@@ -55,11 +55,11 @@ class TracksController extends Controller {
         // send data to channel
         $publish_resp = $this->publish_to_channel($postVars, $channel);
 //        
-//        $channel1 = "snaplion-event-track-channel-1";
+//        $channel1 = "channel-snaplion-event";
 //        $postVars['channel'] = $channel1;
 //        $publish_resp1 = $this->publish_to_channel($postVars, $channel1);
 ////        
-//        $channel2 = "snaplion-event-track-channel-2";
+//        $channel2 = "channel-rohuma-event";
 //        $postVars['channel'] = $channel2;
 //        $publish_resp2 = $this->publish_to_channel($postVars, $channel2);
         
@@ -98,10 +98,7 @@ class TracksController extends Controller {
         $events[] = array('name' => 'event-' . rand(100000, 10000000));
         $events[] = array('name' => 'event-' . rand(100000, 10000000));
         $events[] = array('name' => 'event-' . rand(100000, 10000000));
-        $result = array(
-            'status' => 200, 'message' => "Your request noted successfully.",
-            'data' => $events
-        );
+        $result = array( 'status' => 200, 'message' => "Your request noted successfully.", 'data' => $events );
         return $result;
     }
 
@@ -112,14 +109,6 @@ class TracksController extends Controller {
         } catch (Exception $ex) {
             echo "Error:redis::" . $ex->getMessage();
         }
-        die;
-    }
-
-    public function queue() {
-        $queue_name = "user-events-local-queue";
-        $objQueues = new QueuesController();
-        return $objQueues->queue_data_count($queue_name);
-        //return $objQueues->consume($queue_name);
     }
 
     public function publish_to_channel($message, $channel) {

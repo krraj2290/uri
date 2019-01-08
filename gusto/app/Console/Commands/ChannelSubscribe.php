@@ -16,7 +16,7 @@ class ChannelSubscribe extends Command{
     }
     
     public function handle(){
-        $channels = array("snaplion-event-track-channel", "snaplion-event-track-channel-1");
+        $channels = array("default-event-channel", "snaplion-event-channel");
         try {
             $subscriber = "default";
             $objQueues = new TracksController();

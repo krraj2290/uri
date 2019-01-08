@@ -16,7 +16,7 @@ class RohumaSubscribe extends Command{
     }
     
     public function handle(){
-        $channels = array("snaplion-event-track-channel","snaplion-event-track-channel-2");
+        $channels = array("rohuma-event-channel");
         try {
             $subscriber = "rohuma";
             $objQueues = new TracksController();
