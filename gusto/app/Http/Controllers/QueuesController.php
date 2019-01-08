@@ -10,7 +10,6 @@ class QueuesController extends Controller {
     protected $_queue_name;
     protected $_subscriber;
     protected $_msgs;
-    
     public $_waitingSeconds = 5;
     public $_killWaitingProcessCount = 10;
 
@@ -60,7 +59,7 @@ class QueuesController extends Controller {
         $this->_queue_name = $queue_name;
         try {
             $queueData = is_array($queueArr) ? json_encode($queueArr) : $queueArr;
-            
+
             echo "send_to_queue:$queue_name:data:\n";
             echo "\n\n $queueData \n\n";
             // send data to queue
@@ -81,17 +80,15 @@ class QueuesController extends Controller {
         $queueData = $this->_obj->brpoplpush($queue_name, $this->_processingQueue(), 2);
         return ($queueData !== null) ? $queueData : false;
     }
-    
-    
-    
+
     /**
      * Remove the enteries from processing queue when successful
      * @param type $data
      * @return type
      */
-    public function _success($queueName,$data) {
+    public function _success($queueName, $data) {
         // check if queue data is empty then no need to process
-        if(empty(trim($data))){
+        if (empty(trim($data))) {
             return false;
         }
         // check if queue data is an array then convert it into string.
@@ -102,6 +99,9 @@ class QueuesController extends Controller {
         if (empty(trim($queueName))) { // validate queue name
             throw new Exception("Empty queue name supplied");
         }
+        //Write json file in append mode
+        $fileWriteObj = new FileWriteController();
+        $fileWriteObj->file_append("/tmp/" . $queueName . ".json", $queueDataArr);
         $this->_queue_name = $queueName;
 //        echo "<br />removing from processing queue '".$this->_processingQueue()."', data : '$data'";
         // remove data from processing queue
@@ -114,9 +114,9 @@ class QueuesController extends Controller {
      * @param type $data
      * @return type
      */
-    public function _fail($queueName,$data) {
+    public function _fail($queueName, $data) {
         // check if queue data is empty then no need to process
-        if(empty(trim($data))){
+        if (empty(trim($data))) {
             return false;
         }
         // check if queue data is an array then convert it into string.
@@ -134,7 +134,6 @@ class QueuesController extends Controller {
         $this->_obj->lpush($this->_failedQueue(), $data);
         return true;
     }
-    
 
     public function get_all_queue_data($queue_name) {
         if (empty($queue_name)) {
@@ -210,15 +209,15 @@ class QueuesController extends Controller {
             $this->_msgs[] = $ex->getMessage();
         }
     }
-    
-    public function subscribe($channels,$subscriber="default") {
+
+    public function subscribe($channels, $subscriber = "default") {
         try {
             if (empty($channels)) {
                 return false;
             }
             $this->_subscriber = $subscriber;
-            try{
-                $returnResult = $this->_obj->subscribe($channels, function($message,$channel){
+            try {
+                $returnResult = $this->_obj->subscribe($channels, function($message, $channel) {
                     $this->subscribe_callback($channel, $this->_subscriber, $message);
                 });
             } catch (Exception $ex) {
@@ -228,16 +227,16 @@ class QueuesController extends Controller {
             $this->_msgs[] = $ex->getMessage();
         }
     }
-    
+
     public function subscribe_callback($channel, $subscriber, $message) {
         try {
             // send data to queue for further processing
             $queue_name = "$subscriber-$channel-queue";
             echo "\n Sending data to Queue:$queue_name, Message::\n";
-            
+
             $objQueues = new PubsubController();
-            $resp = $objQueues->send_to_queue($queue_name,$message);
-            
+            $resp = $objQueues->send_to_queue($queue_name, $message);
+
             echo "\n PubsubController::send_to_queue:resp:: \n";
             print_r($resp);
             echo "\n\n";
