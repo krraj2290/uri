@@ -12,7 +12,7 @@ ini_set('default_socket_timeout', -1);
 class QueueDefaultEvent extends Command {
 
     protected $signature = 'queue:channel-default-event';
-    protected $_queue_nane = "channel-default-event-queue";
+    protected $_queue_name = "channel-default-event-queue";
     protected $description = 'Process QUEUE "channel-default-event-queue" to get message and save to S3 File';
     protected $_killProcessCount = 5; // kill process after 50 attempt
 
@@ -23,7 +23,7 @@ class QueueDefaultEvent extends Command {
     public function handle() {
         try {
             // consume the queue
-            $this->_consume($this->_queue_naame);
+            $this->_consume($this->_queue_name);
         } catch (Exception $e) {
             echo "\n Errors:" . $e->getMessage();
         }

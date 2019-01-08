@@ -12,7 +12,7 @@ ini_set('default_socket_timeout', -1);
 class QueueRohumaEvent extends Command {
 
     protected $signature = 'queue:channel-rohuma-event';
-    protected $_queue_nane = "channel-rohuma-event-queue";
+    protected $_queue_name = "channel-rohuma-event-queue";
     protected $description = 'Process QUEUE "channel-rohuma-event-queue" to get message and save to S3 File';
     protected $_killProcessCount = 5; // kill process after 50 attempt
 
@@ -23,7 +23,7 @@ class QueueRohumaEvent extends Command {
     public function handle() {
         try {
             // consume the queue
-            $this->_consume($this->_queue_naame);
+            $this->_consume($this->_queue_name);
         } catch (Exception $e) {
             echo "\n Errors:" . $e->getMessage();
         }
