@@ -99,5 +99,18 @@ class PubsubController extends Controller {
             $this->_msgs[] = $ex->getMessage();
         }
     }
+    
+    
+    public function sendFileToS3() {
+        try {
+            $queueController = new QueuesController();
+            $res = $queueController->get('file_name_for_s3_upload');
+            if(file_exists($res)){
+                
+            }
+        } catch (Exception $ex) {
+            
+        }
+    }
 
 }
