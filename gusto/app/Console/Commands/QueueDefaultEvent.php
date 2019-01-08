@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TracksController;
 use App\Http\Controllers\QueuesController;
-
 use App\Http\Controllers\FileWriteController;
 use App\Http\Controllers\PubsubController;
 
@@ -62,37 +61,7 @@ class QueueDefaultEvent extends Command {
                         }
                         try {
                             // save the entry
-                            
-                            //write file 
-                            $file_name = "/tmp/" . $queueName . ".json";
-                            $file_name1 = "/tmp/" . $queueName . "_1.json";
-                            $bfileSize1 = 0;
-                            $bfileSize = 0;
-                            if (file_exists($file_name)) {
-                                $bfileSize = filesize($file_name);
-                            }
-                            if (file_exists($file_name1)) {
-                                $bfileSize1 = filesize($file_name1);
-                            }
-                            if (file_exists($file_name1) && ($bfileSize1 / (1024 * 1024)) > 10) {
-                                $file_name = "/tmp/" . $queueName . ".json";
-                            }
-                            if (file_exists($file_name) && ($bfileSize / (1024 * 1024)) > 10) {
-                                $file_name = "/tmp/" . $queueName . "_1.json";
-                            }
-                            
-                            echo "\n Write api payload to log file file_name:$file_name \n";
-                            
-                            $fileWriteObj = new FileWriteController();
-                            $fileWriteObj->file_append($file_name, $queueDataArr);
-                            $bytesSize = filesize($file_name);
-                            if (($bytesSize / (1024 * 1024)) > 10) {
-                                //Send file name to Queue for process and send to s3
-                                $pubsubObj = new PubsubController();
-                                $pubsubObj->send_to_queue('file_name_for_s3_upload', $file_name);
-    //                           unlink($file_name);
-                            }
-                            
+                            $this->save_to_server_file($queueName,$queueDataArr);
                         } catch (Exception $ex) {
                             
                         }
@@ -112,6 +81,42 @@ class QueueDefaultEvent extends Command {
             return true;
         } catch (Exception $ex) {
             throw $ex;
+        }
+    }
+
+    public function save_to_server_file($queueName,$queueDataArr) {
+        try {
+            //write file 
+            $file_name = "/tmp/" . $queueName . ".json";
+            $file_name1 = "/tmp/" . $queueName . "_1.json";
+            $bfileSize1 = 0;
+            $bfileSize = 0;
+            if (file_exists($file_name)) {
+                $bfileSize = filesize($file_name);
+            }
+            if (file_exists($file_name1)) {
+                $bfileSize1 = filesize($file_name1);
+            }
+            if (file_exists($file_name1) && ($bfileSize1 / (1024 * 1024)) > 10) {
+                $file_name = "/tmp/" . $queueName . ".json";
+            }
+            if (file_exists($file_name) && ($bfileSize / (1024 * 1024)) > 10) {
+                $file_name = "/tmp/" . $queueName . "_1.json";
+            }
+
+            echo "\n Write api payload to log file save_to_server_file::file_name:$file_name \n";
+
+            $fileWriteObj = new FileWriteController();
+            $fileWriteObj->file_append($file_name, $queueDataArr);
+            $bytesSize = filesize($file_name);
+            if (($bytesSize / (1024 * 1024)) > 10) {
+                //Send file name to Queue for process and send to s3
+                $pubsubObj = new PubsubController();
+                $pubsubObj->send_to_queue('file_name_for_s3_upload', $file_name);
+                //                           unlink($file_name);
+            }
+        } catch (Exception $ex) {
+            
         }
     }
 
