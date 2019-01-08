@@ -30,11 +30,14 @@ class FileWriteController extends Controller {
         try {
             $fp = fopen($fileName, 'a'); //opens file in append mode  
             $data = json_encode($newData);
-            fwrite($fp, $data."\n");
+            flock($fp, LOCK_EX);
+            fwrite($fp, $data . "\n");
+            flock($fp, LOCK_UN);
             fclose($fp);
         } catch (Exception $ex) {
             
         }
     }
+
 
 }
