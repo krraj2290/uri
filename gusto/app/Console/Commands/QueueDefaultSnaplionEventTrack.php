@@ -9,17 +9,17 @@ use App\Http\Controllers\QueuesController;
 ini_set('default_socket_timeout', -1);
 
 class QueueDefaultSnaplionEventTrack extends Command{
-    protected $signature = 'queue:defaultsnaplioneventtrack';
-    protected $description = 'Process QUEUE "defaultsnaplioneventtrack" to get message and save to S3 File';
+    protected $signature = 'queue:defaulteventtrack';
+    protected $description = 'Process QUEUE "default-event-channel-queue" to get message and save to S3 File';
     
-    protected $_killProcessCount = 10; // kill process after 50 attempt
+    protected $_killProcessCount = 5; // kill process after 50 attempt
     
     public function __construct() {
         parent::__construct();
     }
     
     public function handle(){
-        $queue_name = "default-snaplion-event-track-channel-queue";
+        $queue_name = "default-event-channel-queue";
         try {
             // consume the queue
             $this->_consume($queue_name);
