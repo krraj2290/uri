@@ -8,6 +8,9 @@ use App\Http\Controllers\TracksController;
 use App\Http\Controllers\QueuesController;
 use App\Http\Controllers\EventController;
 
+use App\Http\Controllers\FileWriteController;
+use App\Http\Controllers\PubsubController;
+
 ini_set('default_socket_timeout', -1);
 
 class QueueEventFallback extends Command {
