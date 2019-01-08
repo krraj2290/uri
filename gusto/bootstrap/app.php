@@ -94,6 +94,10 @@ $app->singleton(
 |
 */
 
+ /**
+  * Aws Setting
+  */
+ $app->register(Aws\Laravel\AwsServiceProvider::class);
 
 /**
  * Redis Settings
