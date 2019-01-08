@@ -31,7 +31,7 @@ class PubsubController extends Controller {
             $postVars = $request->all();
 //            $jsonData = json_encode($postVars,true);
 //            echo $jsonData;
-            $this->_adapter->publish('default-snaplion-event-track-channel-queue',$postVars);
+            $this->_adapter->publish('default-snaplion-event-track-channel-queue', $postVars);
 //            $this->_adapter->publish('default-snaplion-event-track-channel-queue', 'HELLO WORLD');
 //            $this->_adapter->publish('default-snaplion-event-track-channel-queue', ['hello' => 'India']);
 //            $this->_adapter->publish('default_test_1', 1);
@@ -52,16 +52,16 @@ class PubsubController extends Controller {
         }
     }
 
-    public function subscribe() { 
+    public function subscribe() {
         try {
-            $channels = array('default-snaplion-event-track-channel-queue','default_test');
-            
+            $channels = array('default-snaplion-event-track-channel-queue', 'default_test');
+
             $this->_adapter->subscribe($channels, function ($message) {
 //                print_r(func_get_args());
 //                var_dump($message);
                 $queueController = new QueuesController();
-                $res = $queueController->send_to_queue($message['channel'],$message['message']);
-                
+                $res = $queueController->send_to_queue($message['channel'], $message['message']);
+
 //                var_dump($res);
 //                var_dump($channel);
             });
@@ -69,17 +69,17 @@ class PubsubController extends Controller {
             
         }
     }
-    
-    public function subscribe_rohuma() { 
+
+    public function subscribe_rohuma() {
         try {
-            $channels = array('my_channel_1_test','default_test_1');
-            
+            $channels = array('my_channel_1_test', 'default_test_1');
+
             $this->_adapter->subscribe($channels, function ($message) {
 //                print_r(func_get_args());
 //                var_dump($message);
                 $queueController = new QueuesController();
-                $res = $queueController->send_to_queue($message['channel'],$message['message']);
-                
+                $res = $queueController->send_to_queue($message['channel'], $message['message']);
+
                 var_dump($res);
             });
         } catch (Exception $ex) {
@@ -99,15 +99,19 @@ class PubsubController extends Controller {
             $this->_msgs[] = $ex->getMessage();
         }
     }
-    
-    
+
     public function sendFileToS3() {
         try {
             $queueController = new QueuesController();
             $res = $queueController->get('file_name_for_s3_upload');
-            if(file_exists($res)){
-                
-            }
+//            if (file_exists($res)) {
+//                $s3 = App::make('aws')->createClient('s3');
+//                $s3->putObject(array(
+//                    'Bucket' => 'YOUR_BUCKET',
+//                    'Key' => 'YOUR_OBJECT_KEY',
+//                    'SourceFile' => '/the/path/to/the/file/you/are/uploading.ext',
+//                ));
+//            }
         } catch (Exception $ex) {
             
         }
