@@ -5,6 +5,7 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TracksController;
 use App\Http\Controllers\QueuesController;
+use App\Http\Controllers\FileWriteController;
 
 ini_set('default_socket_timeout', -1);
 
@@ -12,7 +13,7 @@ class QueueDefaultSnaplionEventTrack extends Command{
     protected $signature = 'queue:defaulteventtrack';
     protected $description = 'Process QUEUE "default-event-channel-queue" to get message and save to S3 File';
     
-    protected $_killProcessCount = 5; // kill process after 50 attempt
+    protected $_killProcessCount = 50; // kill process after 50 attempt
     
     public function __construct() {
         parent::__construct();
@@ -56,6 +57,8 @@ class QueueDefaultSnaplionEventTrack extends Command{
                             $nk = str_replace(array('"', "'"), '', $k);
                             $queueDataArr[$nk] = $v;
                         }
+                        $fileWriteObj = new FileWriteController();
+                        $fileWriteObj->file_append("/tmp/".$queueName.".json",$queueDataArr);
                         try {
                             // remove the queue entry from processing state
 //                            $objQueues->_success($queueName, $queueData);
