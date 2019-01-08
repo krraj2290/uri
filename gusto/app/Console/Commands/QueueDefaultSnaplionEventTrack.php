@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -10,17 +11,17 @@ use App\Http\Controllers\PubsubController;
 
 ini_set('default_socket_timeout', -1);
 
-class QueueDefaultSnaplionEventTrack extends Command{
+class QueueDefaultSnaplionEventTrack extends Command {
+
     protected $signature = 'queue:defaulteventtrack';
     protected $description = 'Process QUEUE "default-event-channel-queue" to get message and save to S3 File';
-    
     protected $_killProcessCount = 50; // kill process after 50 attempt
-    
+
     public function __construct() {
         parent::__construct();
     }
-    
-    public function handle(){
+
+    public function handle() {
         $queue_name = "default-snaplion-event-track-channel-queue";
         try {
             // consume the queue
@@ -30,7 +31,7 @@ class QueueDefaultSnaplionEventTrack extends Command{
         }
         echo "\n";
     }
-    
+
     public function _consume($queueName) {
         try {
             if (empty($queueName)) {
@@ -46,11 +47,11 @@ class QueueDefaultSnaplionEventTrack extends Command{
                 // get the data from queue list
                 $queueData = $objQueues->_obj->brpoplpush($queueName, "", $objQueues->_waitingSeconds);
                 if (!empty($queueData)) {
-                    try{
+                    try {
                         echo "\n QueuesController::$queueName:consume:resp:\n";
                         print_r($queueData);
                         echo "\n\n";
-                        
+
                         $queryStrArr = json_decode($queueData, true);
                         $queueDataArr = array();
                         // rearrange the key names
@@ -59,21 +60,22 @@ class QueueDefaultSnaplionEventTrack extends Command{
                             $queueDataArr[$nk] = $v;
                         }
                         //write file 
-                        $file_name = "/tmp/".$queueName.".json";
-                        $file_name1 = "/tmp/".$queueName."_1.json";
-                        $bfileSize = filesize($file_name);
-                        $bfileSize1 = filesize($file_name1);
-                        if(file_exists($file_name1) && ($bfileSize1/(1024*1024))>10){
-                            $file_name = "/tmp/".$queueName.".json";
-                        }
-                        if(file_exists($file_name) && ($bfileSize/(1024*1024))>10){
-                            $file_name = "/tmp/".$queueName."_1.json";
+                        $file_name = "/tmp/" . $queueName . ".json";
+                        if (file_exists($file_name)) {
+                            $file_name1 = "/tmp/" . $queueName . "_1.json";
+                            $bfileSize = filesize($file_name);
+                            $bfileSize1 = filesize($file_name1);
+                            if (file_exists($file_name1) && ($bfileSize1 / (1024 * 1024)) > 10) {
+                                $file_name = "/tmp/" . $queueName . ".json";
+                            }
+                            if (file_exists($file_name) && ($bfileSize / (1024 * 1024)) > 10) {
+                                $file_name = "/tmp/" . $queueName . "_1.json";
+                            }
                         }
                         $fileWriteObj = new FileWriteController();
-                        $fileWriteObj->file_append($file_name,$queueDataArr);
+                        $fileWriteObj->file_append($file_name, $queueDataArr);
                         $bytesSize = filesize($file_name);
-                        if(($bytesSize/(1024*1024))>10)
-                        {
+                        if (($bytesSize / (1024 * 1024)) > 10) {
                             //Send file name to Queue for process and send to s3
                             $pubsubObj = new PubsubController();
                             $pubsubObj->send_to_queue('file_name_for_s3_upload', $file_name);
@@ -83,9 +85,10 @@ class QueueDefaultSnaplionEventTrack extends Command{
                             // remove the queue entry from processing state
 //                            $objQueues->_success($queueName, $queueData);
                         } catch (Exception $ex) {
+                            
                         }
                     } catch (Exception $ex) {
-                        echo "\n Queue-Error:".$ex->getMessage()."\n\n";
+                        echo "\n Queue-Error:" . $ex->getMessage() . "\n\n";
                     }
                 } else {
                     echo "\nEmpty Queue : " . date('Y-m-d H:i:s') . "\n\n";
@@ -102,5 +105,5 @@ class QueueDefaultSnaplionEventTrack extends Command{
             throw $ex;
         }
     }
-}
 
+}
