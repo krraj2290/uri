@@ -62,12 +62,17 @@ class QueueEventFallback extends Command {
                             $queueDataArr[$nk] = $v;
                         }
                         try {
+                            $extra = isset($queueDataArr['extra']) ? $queueDataArr['extra'] : array();
+                            $extra  = json_encode($extra);
                             $addArr = array(
-                                'mobapp_id' => $queueDataArr['app_id'],
-                                'fan_id' => $queueDataArr['fan_id'],
-                                'section' => $queueDataArr['channel'],
-                                'event' => $queueDataArr['event'],
-                                'transaction_id' => $queueDataArr['guid'],
+                                'mobapp_id' => isset($queueDataArr['app_id']) ? $queueDataArr['app_id'] : 0, 
+                                'fan_id' => isset($queueDataArr['fan_id']) ? $queueDataArr['fan_id'] : 0,
+                                'section' => isset($queueDataArr['channel']) ? $queueDataArr['channel'] : '', 
+                                'event' => isset($queueDataArr['event']) ? $queueDataArr['event'] : '',
+                                'sub_event' => isset($queueDataArr['sub_event']) ? $queueDataArr['sub_event'] : "", 
+                                'extra' => $extra,
+                                'timestamp' => isset($queueDataArr['timestamp']) ? $queueDataArr['timestamp'] : time(),
+                                'transaction_id' => isset($queueDataArr['guid']) ? $queueDataArr['guid'] : "",
                             );
                             // save the entry 
 //                            $objEvents = new EventController();
