@@ -30,19 +30,7 @@ class TracksController extends Controller {
      * @return string
      */
     public function create() {
-        
-        
         $request = app('request');
-//        print_r($request->headers);
-//        print_r($request->headers->get('authorization'));
-//        print_r($request->headers->get('s-id'));
-//        print_r($request->getMethod());
-        
-//        print_r($request->all());
-//        print_r($request->toArray());echo "<br />";
-//        print_r($request->get('app_id'));echo ", ";
-//        print_r($request->input('fan_id'));
-        
         $postVars = $request->all();
         
         $channel = "channel-default-event";
@@ -54,15 +42,7 @@ class TracksController extends Controller {
         
         // send data to channel
         $publish_resp = $this->publish_to_channel($postVars, $channel);
-//        
-//        $channel1 = "channel-snaplion-event";
-//        $postVars['channel'] = $channel1;
-//        $publish_resp1 = $this->publish_to_channel($postVars, $channel1);
-////        
-//        $channel2 = "channel-rohuma-event";
-//        $postVars['channel'] = $channel2;
-//        $publish_resp2 = $this->publish_to_channel($postVars, $channel2);
-        
+
         $status = 500;
         if($publish_resp){
             $status = 200;

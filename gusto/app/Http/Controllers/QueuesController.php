@@ -202,8 +202,16 @@ class QueuesController extends Controller {
         }
         try {
             $message = is_array($message) ? json_encode($message) : $message;
-
-            return $this->_obj->publish($channel, $message);
+            // publish the message to channel
+            $publish_result = $this->_obj->publish($channel, $message);
+            if(!$publish_result){
+                /**
+                 * @important send the data to fallback if there is no running subscriber found for published channel
+                 */
+                $fallback_result = $this->send_to_queue("default-event-fallback-queue", $message);
+//                return $fallback_result;
+            }
+            return $publish_result;
         } catch (Exception $ex) {
             $this->_msgs[] = $ex->getMessage();
         }

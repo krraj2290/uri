@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CallRoute',
         'App\Console\Commands\RohumaCallRoute',
         
+        'App\Console\Commands\QueueEventFallback',
         'App\Console\Commands\QueueDefaultSnaplionEventTrack',
         'App\Console\Commands\QueueDefaultEvent',
         'App\Console\Commands\QueueRohumaEvent',
