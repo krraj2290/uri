@@ -5,6 +5,8 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TracksController;
 use App\Http\Controllers\QueuesController;
+use App\Http\Controllers\FileWriteController;
+use App\Http\Controllers\PubsubController;
 
 ini_set('default_socket_timeout', -1);
 
@@ -12,7 +14,7 @@ class QueueDefaultSnaplionEventTrack extends Command{
     protected $signature = 'queue:defaulteventtrack';
     protected $description = 'Process QUEUE "default-event-channel-queue" to get message and save to S3 File';
     
-    protected $_killProcessCount = 5; // kill process after 50 attempt
+    protected $_killProcessCount = 50; // kill process after 50 attempt
     
     public function __construct() {
         parent::__construct();
@@ -55,6 +57,27 @@ class QueueDefaultSnaplionEventTrack extends Command{
                         foreach ($queryStrArr as $k => $v) {
                             $nk = str_replace(array('"', "'"), '', $k);
                             $queueDataArr[$nk] = $v;
+                        }
+                        //write file 
+                        $file_name = "/tmp/".$queueName.".json";
+                        $file_name1 = "/tmp/".$queueName."_1.json";
+                        $bfileSize = filesize($file_name);
+                        $bfileSize1 = filesize($file_name1);
+                        if(file_exists($file_name1) && ($bfileSize1/(1024*1024))>10){
+                            $file_name = "/tmp/".$queueName.".json";
+                        }
+                        if(file_exists($file_name) && ($bfileSize/(1024*1024))>10){
+                            $file_name = "/tmp/".$queueName."_1.json";
+                        }
+                        $fileWriteObj = new FileWriteController();
+                        $fileWriteObj->file_append($file_name,$queueDataArr);
+                        $bytesSize = filesize($file_name);
+                        if(($bytesSize/(1024*1024))>10)
+                        {
+                            //Send file name to Queue for process and send to s3
+                            $pubsubObj = new PubsubController();
+                            $pubsubObj->send_to_queue('file_name_for_s3_upload', $file_name);
+//                           unlink($file_name);
                         }
                         try {
                             // remove the queue entry from processing state

@@ -27,9 +27,14 @@ class PubsubController extends Controller {
 
     public function publish() {
         try {
-            $this->_adapter->publish('my_channel_1_test', 'HELLO WORLD');
-            $this->_adapter->publish('default_test', ['hello' => 'India']);
-            $this->_adapter->publish('default_test_1', 1);
+            $request = app('request');
+            $postVars = $request->all();
+//            $jsonData = json_encode($postVars,true);
+//            echo $jsonData;
+            $this->_adapter->publish('default-snaplion-event-track-channel-queue',$postVars);
+//            $this->_adapter->publish('default-snaplion-event-track-channel-queue', 'HELLO WORLD');
+//            $this->_adapter->publish('default-snaplion-event-track-channel-queue', ['hello' => 'India']);
+//            $this->_adapter->publish('default_test_1', 1);
         } catch (Exception $ex) {
             
         }
@@ -49,7 +54,7 @@ class PubsubController extends Controller {
 
     public function subscribe() { 
         try {
-            $channels = array('my_channel_1_test','default_test');
+            $channels = array('default-snaplion-event-track-channel-queue','default_test');
             
             $this->_adapter->subscribe($channels, function ($message) {
 //                print_r(func_get_args());
@@ -57,7 +62,7 @@ class PubsubController extends Controller {
                 $queueController = new QueuesController();
                 $res = $queueController->send_to_queue($message['channel'],$message['message']);
                 
-                var_dump($res);
+//                var_dump($res);
 //                var_dump($channel);
             });
         } catch (Exception $ex) {
@@ -92,6 +97,19 @@ class PubsubController extends Controller {
             return $this->_adapter->queue($queue_name, $queueData);
         } catch (Exception $ex) {
             $this->_msgs[] = $ex->getMessage();
+        }
+    }
+    
+    
+    public function sendFileToS3() {
+        try {
+            $queueController = new QueuesController();
+            $res = $queueController->get('file_name_for_s3_upload');
+            if(file_exists($res)){
+                
+            }
+        } catch (Exception $ex) {
+            
         }
     }
 
