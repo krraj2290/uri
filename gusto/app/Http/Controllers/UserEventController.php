@@ -8,11 +8,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Event;
+use App\UserEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EventController extends Controller {
+class UserEventController extends Controller {
 
     /**
      * Create a new controller instance.
@@ -29,7 +29,7 @@ class EventController extends Controller {
         }
         $params['updated_at'] = date("Y-m-d H:i:s");
         $params['created_at'] = date("Y-m-d H:i:s");
-        $objEvent = new \App\Event();
+        $objEvent = new \App\UserEvent();
         $result = $objEvent->create($params);
         return $result;
     }

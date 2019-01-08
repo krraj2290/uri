@@ -69,9 +69,12 @@ class QueueEventFallback extends Command {
                                 'event' => $queueDataArr['event'],
                                 'transaction_id' => $queueDataArr['guid'],
                             );
-                            // save the entry
+                            // save the entry 
 //                            $objEvents = new EventController();
 //                            $objEvents->save($addArr);
+//                            
+                            $objEvents = new \App\Http\Controllers\UserEventController();
+                            $objEvents->save($addArr);
                         } catch (Exception $ex) {
                             
                         }
