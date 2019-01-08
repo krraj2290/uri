@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Request;
+use Illuminate\Support\Facades\Storage;
 
 class PubsubController extends Controller {
 
@@ -101,14 +102,9 @@ class PubsubController extends Controller {
         try {
             $queueController = new QueuesController();
             $res = $queueController->get('file_name_for_s3_upload');
-//            if (file_exists($res)) {
-//                $s3 = App::make('aws')->createClient('s3');
-//                $s3->putObject(array(
-//                    'Bucket' => 'YOUR_BUCKET',
-//                    'Key' => 'YOUR_OBJECT_KEY',
-//                    'SourceFile' => '/the/path/to/the/file/you/are/uploading.ext',
-//                ));
-//            }
+            if (file_exists($res)) {
+                echo $storagePath = Storage::disk('s3')->put("uploads", $res, 'public');
+            }
         } catch (Exception $ex) {
             
         }
