@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TracksController;
 use App\Http\Controllers\QueuesController;
+use App\Http\Controllers\EventController;
 
 ini_set('default_socket_timeout', -1);
 
@@ -14,7 +15,7 @@ class QueueEventFallback extends Command {
     protected $signature = 'queue:default-event-fallback';
     protected $_queue_name = "default-event-fallback-queue";
     protected $description = 'Process QUEUE "default-event-fallback-queue" (in this queue only those data come whoes no subscriber found) to get message and save to S3 File';
-    protected $_killProcessCount = 5; // kill process after 50 attempt
+    protected $_killProcessCount = 50; // kill process after 50 attempt
 
     public function __construct() {
         parent::__construct();
@@ -51,6 +52,9 @@ class QueueEventFallback extends Command {
                         echo "\n\n";
 
                         $queryStrArr = json_decode($queueData, true);
+                        if(!is_array($queryStrArr)){
+                            $queryStrArr = json_decode($queryStrArr, true);
+                        }
                         $queueDataArr = array();
                         // rearrange the key names
                         foreach ($queryStrArr as $k => $v) {
@@ -58,7 +62,16 @@ class QueueEventFallback extends Command {
                             $queueDataArr[$nk] = $v;
                         }
                         try {
+                            $addArr = array(
+                                'mobapp_id' => $queueDataArr['app_id'],
+                                'fan_id' => $queueDataArr['fan_id'],
+                                'section' => $queueDataArr['channel'],
+                                'event' => $queueDataArr['event'],
+                                'transaction_id' => $queueDataArr['guid'],
+                            );
                             // save the entry
+                            $objEvents = new EventController();
+                            $objEvents->save($addArr);
                         } catch (Exception $ex) {
                             
                         }
